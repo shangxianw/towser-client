@@ -1,9 +1,11 @@
 <template>
   <div>
-    <nut-navbar :title="sponsorName" left-show @on-click-back="onReturnClick">
+    <nut-navbar :title="info.gameName" left-show @on-click-back="onReturnClick">
     </nut-navbar>
-    <p>游戏类型：{{gameName}} {{tips}}</p>
-    <p>商家描述：{{desc}}</p>
+    <p>游戏类型：{{info.gameName}} {{tips}}</p>
+    <p>商家描述：{{info.desc}}</p>
+    <p>金币：{{info.money}}</p>
+    <p>通关人数：{{info.winCount}} / {{info.playCount}}</p>
     <nut-button @click="onStartClick">开始游戏</nut-button>
   </div>
 </template>
@@ -16,11 +18,7 @@ export default {
   data() {
     return {
       id: null,
-      desc: "",
-      gameName: "",
-      gameType: null,
-      sponsorName: "",
-      status: null,
+      info: {},
       tips: ""
     }
   },
@@ -43,10 +41,7 @@ export default {
       this.$api.get(api.getActivetyDetail, { params }).then(resp => resp.data).then(resp => {
         if (resp.code === 1) {
           const result = resp.result;
-          this.gameName = result.gameName;
-          this.gameType = result.game;
-          this.sponsorName = result.sponsorName;
-          this.desc = result.desc;
+          this.info = result;
           if (Number(result.game) === 1) {
             this.tips = `${result.row}x${result.col} ${result.boom}颗雷`;
           }
@@ -57,11 +52,11 @@ export default {
     },
 
     onStartClick() {
-      this.$router.push({ path: "game", query: { activity: this.id, gameType: this.gameType } })
+      this.$router.push({ path: "game", query: { activity: this.id, gameType: this.info.game } })
     },
 
     onReturnClick() {
-      this.$router.back();
+      this.$router.push("home");
     }
   }
 }

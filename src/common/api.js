@@ -5,6 +5,7 @@ const api = {
 api.getActivityList = api.baseUrl + "getActivityList";
 api.getActivetyDetail = api.baseUrl + "getActivetyDetail";
 api.startGame = api.baseUrl + "startGame";
+api.getUserInfo = api.baseUrl + "getUserInfo";
 
 // 扫雷相关
 api.openBoomCell = api.baseUrl + "openBoomCell";

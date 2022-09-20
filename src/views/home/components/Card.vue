@@ -2,6 +2,8 @@
   <div class="container" @click="onClick">
     <p>商家：{{info.sponsorName}}</p>
     <p>类型：{{info.gameName}}</p>
+    <p>金币：{{info.money}}</p>
+    <p>通关人数：{{info.winCount}}</p>
   </div>
 </template>
 
