@@ -30,5 +30,6 @@ export default {
 
 html {
   font-family: Avenir, Helvetica, Arial, sans-serif;
+  background-color: #eee;
 }
 </style>

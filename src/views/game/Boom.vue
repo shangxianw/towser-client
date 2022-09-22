@@ -104,7 +104,7 @@ export default {
 
           if (Number(status === 2)) {
             this.$message.warn("已结束！")
-          } else if(Number(status === 3)) {
+          } else if (Number(status === 3)) {
             this.$message.success("恭喜你通过对局!")
           }
         } else {
