@@ -10,6 +10,7 @@
       <nut-cell title="个人信息" is-link></nut-cell>
       <nut-cell :title="`提现(${userInfo.money}币)`" is-link></nut-cell>
       <nut-cell title="提现记录" is-link></nut-cell>
+      <nut-cell title="我要展示" is-link></nut-cell>
       <nut-cell @click="onLogoutClick" is-link>
         退出登录
       </nut-cell>
