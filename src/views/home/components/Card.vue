@@ -1,8 +1,10 @@
 <template>
   <div class="container" @click="onClick">
     <div class="imgBox">
-      <nut-image src="//img10.360buyimg.com/ling/jfs/t1/181258/24/10385/53029/60d04978Ef21f2d42/92baeb21f907cd24.jpg"
-        width="100%" height="120"></nut-image>
+      <nut-image :src="`http://localhost:9080/sponsor/${info.sponsor}/frontcover.png`" fit="contain" showError
+        :style="{minHeight: '100px'}">
+        <template #error> 加载失败 </template>
+      </nut-image>
       <div>
         <p class="winInfo">
           <nut-icon name="my"></nut-icon>
@@ -18,7 +20,10 @@
       <nut-tag type="primary" mark>{{info.gameName}}</nut-tag>
       <p>{{leftTime}}</p>
     </div>
-    <div class="sponsorInfo">{{info.sponsorName}}</div>
+    <div class="sponsorInfo">
+      <nut-icon class="sponerIcon" name="shop"></nut-icon>
+      <span>{{info.sponsorName}}</span>
+    </div>
   </div>
 </template>
 
@@ -74,10 +79,11 @@ export default {
 
 <style scoped>
 .container {
+  border-radius: 4px;
   margin-top: 8px;
   border: 1px solid #ccc;
-  background-color: aquamarine;
-  padding: 0 0 4px 0;
+  background-color: #fff;
+  padding: 0 0 8px 0;
 }
 
 .imgBox {
@@ -99,7 +105,7 @@ export default {
 
 .titleInfo {
   clear: both;
-  padding: 4px 4px 0 0;
+  padding: 8px 8px 0 0;
 }
 
 .titleInfo p {
@@ -107,7 +113,14 @@ export default {
 }
 
 .sponsorInfo {
+  clear: both;
   width: 100%;
-  margin-left: 4px;
+  color: #bbb;
+  font-size: 14px;
+  margin: 8px 0 0 4px;
+}
+
+.sponerIcon {
+  height: 1.5ex;
 }
 </style>
