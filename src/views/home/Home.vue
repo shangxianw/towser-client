@@ -1,9 +1,27 @@
 <template>
   <div class="container">
-    <nut-menu scroll-fixed>
-      <nut-menu-item v-model="kind" :options="kindOptions" @change="(value) => onMenuItemChange('kind', value)" />
-      <nut-menu-item v-model="sort" :options="sortOptions" @change="(value) => onMenuItemChange('sort', value)" />
-    </nut-menu>
+    <nut-navbar title="游戏">
+      <template #right>
+        <nut-icon name="more-x" @click="onSortClick"></nut-icon>
+      </template>
+    </nut-navbar>
+
+    <nut-popup position="right" :style="popupStyle" v-model:visible="popupVisible" @close="onPopupClose">
+      <nut-cell-group title="分类">
+        <nut-cell>
+          <nut-radiogroup v-model="kind">
+            <nut-radio v-for="item in kindOptions" :label="item.value" :key="item.value">{{item.text}}</nut-radio>
+          </nut-radiogroup>
+        </nut-cell>
+      </nut-cell-group>
+      <nut-cell-group title="排序方式">
+        <nut-cell>
+          <nut-radiogroup v-model="sort">
+            <nut-radio v-for="item in sortOptions" :label="item.value" :key="item.value">{{item.text}}</nut-radio>
+          </nut-radiogroup>
+        </nut-cell>
+      </nut-cell-group>
+    </nut-popup>
 
     <nut-row type="flex" justify="space-evenly">
       <nut-col :span="11">
@@ -35,7 +53,8 @@ export default {
         { value: "1", text: "降序" },
         { value: "2", text: "升序" }
       ],
-      list: []
+      list: [],
+      popupVisible: false
     }
   },
 
@@ -50,6 +69,14 @@ export default {
 
     rightCards() {
       return this.list.filter((item, index) => index % 2 === 1);
+    },
+
+    popupStyle() {
+      return {
+        width: "50%",
+        minWidth: "200px",
+        height: "100%"
+      }
     }
   },
 
@@ -68,8 +95,12 @@ export default {
       })
     },
 
-    onScrollBottom() {
+    onPopupClose() {
+      this.updateList();
+    },
 
+    onSortClick() {
+      this.popupVisible = true;
     },
 
     onMenuItemChange(type, value) {
@@ -81,5 +112,7 @@ export default {
 </script>
 
 <style scoped>
-
+.nut-navbar {
+  margin-bottom: 0px;
+}
 </style>
