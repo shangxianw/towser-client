@@ -9,7 +9,7 @@ import storage from "./common/storage";
 import NutUI from "@nutui/nutui";
 // 采用按需加载时  此全局css样式，需要删除
 import "@nutui/nutui/dist/style.css";
-import { Notify, Dialog } from '@nutui/nutui';
+import { Notify, Dialog, Toast } from '@nutui/nutui';
 
 const app = createApp(App)
 window.app = app;
@@ -23,7 +23,8 @@ axios.interceptors.response.use(config => {
   return config;
 })
 app.config.globalProperties.$api = axios;
-app.config.globalProperties.$message = Notify;
+app.config.globalProperties.$notify = Notify;
+app.config.globalProperties.$message = Toast;
 app.config.globalProperties.$dialog = Dialog;
 app.config.globalProperties.$storage = storage;
 
