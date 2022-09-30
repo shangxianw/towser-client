@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="active=== 'home'">主页</div>
+    <HomeTabPane v-if="active=== 'home'" />
     <UserTabPane v-if="active=== 'user'" />
     <van-tabbar v-model="active" @change="onChange">
       <van-tabbar-item name="home" icon="home-o">主页</van-tabbar-item>
@@ -11,7 +11,8 @@
 
 <script>
 import UserTabPane from "./UserTabPane";
-const components = { UserTabPane }
+import HomeTabPane from "./HomeTabPane";
+const components = { UserTabPane, HomeTabPane }
 export default {
   components,
   data() {

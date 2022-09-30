@@ -25,3 +25,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 # 代办
 1. css升级成less
+2. url统一一波
+3. alert
+4. loading
