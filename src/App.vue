@@ -1,35 +1,26 @@
 <template>
-  <div>
-    <Main v-if="isMainRouter"></Main>
-    <router-view></router-view>
-  </div>
+  <img alt="Vue logo" src="./assets/logo.png">
+  <HelloWorld msg="Welcome to Your Vue.js App"/>
 </template>
 
 <script>
-import Main from '@/views/main/Main.vue'
+import HelloWorld from './components/HelloWorld.vue'
 
 export default {
-  name: 'Home',
+  name: 'App',
   components: {
-    Main
-  },
-
-  computed: {
-    isMainRouter() {
-      return ["main", "home", "user"].some(item => this.$route.name === item);
-    }
+    HelloWorld
   }
 }
 </script>
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-}
-
-html {
+#app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  background-color: #eee;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
 }
 </style>
