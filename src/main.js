@@ -9,4 +9,5 @@ const app = createApp(App)
 axios.defaults.withCredentials = true;
 app.config.globalProperties.$api = axios;
 
-app.use(Vant).use(router).mount('#app')
+app.use(Vant)
+app.use(router).mount('#app')

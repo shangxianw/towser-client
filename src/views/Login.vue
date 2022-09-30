@@ -27,6 +27,11 @@ export default {
     }
   },
 
+  created() {
+    // 清楚user信息
+    this.setCookie("user", "=0;expires=" + new Date(0).toUTCString());
+  },
+
   methods: {
     onSubmit: function (values) {
       console.log('submit', values);
