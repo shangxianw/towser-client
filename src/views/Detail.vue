@@ -1,14 +1,22 @@
 <template>
   <div>
-    <van-nav-bar left-arrow @click-left="onReturnClick" title="详情" fixed></van-nav-bar>
+    <van-nav-bar left-arrow @click-left="onReturnClick" :title="`${info.sponsorName} - ${info.gameName}`" fixed>
+      <template #right>
+        <van-icon name="question-o" size="20" @click="onQAClick" />
+      </template>
+    </van-nav-bar>
     <div class="listContainer">
       <van-cell-group>
         <van-cell title="游戏类型" :value="`${info.gameName} ${tips}`" />
-        <van-cell title="金币" :value="`${info.money}  (预计可分得${guafen})金币`" />
-        <van-cell title="通关人数" :value="`${info.winCount} / ${info.playCount}`" />
+        <van-cell title="总金币">
+          <template #default>
+            <span style="color: #CD7F32; font-weight: bold">{{info.money}}</span>
+          </template>
+        </van-cell>
+        <van-cell title="通关 / 玩家人数" :value="`${info.winCount} / ${info.playCount}`" />
         <van-cell title="剩余时间">
           <template #default>
-            <van-count-down style="color: '#969799'" :time="leftTime" format="DD 天 HH 时 mm 分 ss 秒" />
+            <van-count-down style="color: #969799" :time="leftTime" format="DD 天 HH 时 mm 分 ss 秒" />
           </template>
         </van-cell>
         <van-button type="primary" block @click="onStartClick">开始游戏</van-button>
@@ -91,6 +99,13 @@ export default {
 
     onReturnClick() {
       this.$router.push('/')
+    },
+
+    onQAClick() {
+      this.$dialog({
+        title: "说明",
+        message: this.info.remark
+      })
     }
   }
 }
@@ -121,5 +136,11 @@ export default {
 
 .sponsorContainer p {
   color: #666;
+}
+
+.van-image {
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 </style>
