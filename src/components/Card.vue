@@ -39,7 +39,12 @@ export default {
 
   methods: {
     onClick() {
-      alert("nice")
+      this.$router.push({
+        path: "detail",
+        query: {
+          activity: this.info.id
+        }
+      })
     },
 
     updateLeftTime() {
