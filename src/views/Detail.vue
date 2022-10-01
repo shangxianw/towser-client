@@ -21,8 +21,7 @@
         </template>
       </van-cell>
       <van-list>
-        <van-image v-for="path in details || []" :key="path"
-          :src="`http://localhost:9080/sponsor/${this.activity}/${path}`" />
+        <van-image v-for="path in details || []" :key="path" :src="`${fileDomain}/sponsor/${this.activity}/${path}`" />
       </van-list>
     </div>
   </div>
@@ -45,7 +44,7 @@ export default {
     this.activity = this.$route.query.activity;
     this.updateInfo();
 
-    const url = `http://localhost:9080/sponsor/${this.activity}/config.json`
+    const url = `${process.env.VUE_APP_FILE_URL}/sponsor/${this.activity}/config.json`
     this.$api.get(url).then(resp => resp.data).then(resp => {
       this.config = resp;
     })
@@ -62,12 +61,16 @@ export default {
 
     leftTime() {
       return new Date(this.info.end).getTime() - Date.now();
+    },
+
+    fileDomain() {
+      return process.env.VUE_APP_FILE_URL;
     }
   },
 
   methods: {
     updateInfo() {
-      const url = `http://localhost:80/getActivetyDetail`;
+      const url = `${process.env.VUE_APP_BASE_URL}/getActivetyDetail`;
       const params = {
         activity: this.activity
       }

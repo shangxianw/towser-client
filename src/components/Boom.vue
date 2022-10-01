@@ -45,7 +45,7 @@ export default {
   },
 
   created() {
-    const url = `http://localhost:9080/sponsor/${this.activity}/config.json`
+    const url = `${process.env.VUE_APP_FILE_URL}/sponsor/${this.activity}/config.json`
     this.$api.get(url).then(resp => resp.data).then(resp => {
       this.config = resp;
     })
@@ -70,7 +70,7 @@ export default {
       const params = {
         activity: this.activity
       }
-      const url = `http://localhost:80/startGame`;
+      const url = `${process.env.VUE_APP_BASE_URL}/startGame`;
       this.$api.get(url, { params }).then(resp => resp.data).then(resp => {
         if (resp.code === 1) {
           const result = resp.result;
@@ -97,7 +97,7 @@ export default {
         col,
         token: this.token
       }
-      const url = `http://localhost:80/openBoomCell`;
+      const url = `${process.env.VUE_APP_BASE_URL}/openBoomCell`;
       this.$api.post(url, data).then(resp => resp.data).then(resp => {
         if (resp.code === 1) {
           const { token, chessBoards, status } = resp.result

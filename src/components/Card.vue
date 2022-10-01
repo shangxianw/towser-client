@@ -1,14 +1,23 @@
 <template>
   <div class="container" @click="onClick">
-    <van-image v-if="info.sponsor" fix="contain" :src="`http://localhost:9080/sponsor/${info.sponsor}/frontcover.png`"
-      :style="{minHeight: '100px'}" />
+    <div class="imgContainer">
+      <van-image v-if="info.sponsor" fix="contain" :src="`${fileDomain}/sponsor/${info.sponsor}/frontcover.png`"
+        :style="{minHeight: '100px', margin: '0 auto'}" />
+      <div class="gameInfoContainer">
+        <van-icon name="smile-o" />
+        <span> {{info.winCount}} / {{info.playCount}}</span>
+        <van-icon name="balance-o" />
+        {{info.money}}
+      </div>
+    </div>
     <div class="titleContainer">
       <van-tag mark type="primary">{{info.gameName}}</van-tag>
-      <p>{{leftTime}}</p>
+      <van-count-down v-if="leftTime >= 0" class="leftTime" style="color: '#969799'" :time="leftTime"
+        format="DD天HH时mm分ss秒" />
+      <div v-else class="leftTime">已过期</div>
     </div>
     <div class="sponsorContainer">
-      <van-icon name="star-o" />
-      <span>{{info.sponsorName}}</span>
+      {{info.sponsorName}}
     </div>
   </div>
 </template>
@@ -19,22 +28,14 @@ export default {
     info: Object
   },
 
-  data() {
-    return {
-      leftTime: "",
-      timer: null
+  computed: {
+    fileDomain() {
+      return process.env.VUE_APP_FILE_URL
+    },
+
+    leftTime() {
+      return new Date(this.info.end).getTime() - Date.now();
     }
-  },
-
-  created() {
-    clearInterval(this.timer);
-    this.timer = setInterval(() => {
-      this.updateLeftTime();
-    }, 50);
-  },
-
-  beforeUnmount() {
-    clearInterval(this.timer);
   },
 
   methods: {
@@ -45,17 +46,6 @@ export default {
           activity: this.info.id
         }
       })
-    },
-
-    updateLeftTime() {
-      if (!this.info || !this.info.end) return;
-      const end = new Date(this.info.end);
-      const now = Date.now();
-      const space = end - now;
-      if (space < 0)
-        return this.leftTime = `已过期`;
-
-      this.leftTime = this.$utils.timeStamp2LeftTime(space);
     }
   }
 }
@@ -63,12 +53,45 @@ export default {
 
 <style scoped>
 .container {
-  border-radius: 4px;
+  border-radius: 8px;
   margin-top: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid #eee;
   background-color: #fff;
   padding: 0 0 8px 0;
 }
 
-.titleContainer p {}
+.imgContainer {
+  position: relative;
+}
+
+.gameInfoContainer {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  color: #fff;
+  font-size: 12px;
+}
+
+.gameInfoContainer span {
+  margin-right: 12px;
+  display: inline-block;
+}
+
+.van-image {
+  width: 100%;
+}
+
+.leftTime {
+  float: right;
+  margin-right: 8px;
+  line-height: -16px;
+  font-size: 12px;
+}
+
+.sponsorContainer {
+  color: #ccc;
+  clear: both;
+  margin-left: 4px;
+  font-size: 14px;
+}
 </style>

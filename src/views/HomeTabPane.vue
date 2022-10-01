@@ -7,7 +7,7 @@
     </van-nav-bar>
     <div class="listContainer">
       <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-        <van-row>
+        <van-row gutter="12" justify="center">
           <van-col span="11">
             <Card v-for="(item, index) in leftCards" :key="index" :info="item" />
           </van-col>
@@ -76,7 +76,7 @@ export default {
         kind: this.kind,
         sort: this.sort
       }
-      const url = `http://localhost:80/getActivityList`;
+      const url = `${process.env.VUE_APP_BASE_URL}/getActivityList`;
       this.$api.get(url, { params }).then(resp => resp.data).then(resp => {
         if (resp.code === 1) {
           this.list = resp.result

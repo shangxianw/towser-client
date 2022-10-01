@@ -35,7 +35,7 @@ export default {
   methods: {
     onSubmit: function (values) {
       console.log('submit', values);
-      const url = `http://localhost:80/login`;
+      const url = `${process.env.VUE_APP_BASE_URL}/login`;
       const data = {
         account: values.account,
         password: values.password
