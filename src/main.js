@@ -10,6 +10,7 @@ const app = createApp(App)
 axios.defaults.withCredentials = true;
 app.config.globalProperties.$api = axios;
 app.config.globalProperties.$utils = utils;
+app.config.globalProperties.$dialog = Vant.Dialog;
 axios.interceptors.response.use(config => {
     // cookie相关
     if ([1001, 1002, 1003, 1004].includes(Number(config?.data?.code))) {

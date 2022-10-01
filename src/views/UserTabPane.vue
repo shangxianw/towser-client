@@ -17,7 +17,9 @@
 export default {
   methods: {
     onLoginoutClick() {
-      this.$router.push("login")
+      this.$dialog.confirm({ message: "是否退出登录" }).then(() => {
+        this.$router.push("login");
+      })
     }
   }
 }
