@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar left-arrow @click-left="$router.back()" title="详情" fixed></van-nav-bar>
+    <van-nav-bar left-arrow @click-left="onReturnClick" title="详情" fixed></van-nav-bar>
     <div class="listContainer">
       <van-cell-group>
         <van-cell title="游戏类型" :value="`${info.gameName} ${tips}`" />
@@ -84,6 +84,10 @@ export default {
 
     onStartClick() {
       this.$router.push({ path: "game", query: { activity: this.activity, gameType: this.info.game } })
+    },
+
+    onReturnClick() {
+      this.$router.push('/')
     }
   }
 }

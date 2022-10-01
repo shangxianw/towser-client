@@ -1,5 +1,11 @@
 <template>
   <div class="container">
+    <div class="infoContainer">
+      <div>
+        <p>{{row}} x {{col}} {{boom}}颗雷</p>
+        <van-button @click="onReturnClick">返回详情页</van-button>
+      </div>
+    </div>
     <div v-for="(row, index) in arrs" :key="index" :style="rowStyle">
       <div v-for="item in row" :key="item.col" :style="showCellStyle(item)" @click="onCellClick(item)">
         {{showCalc(item) ? item.calc : ""}}
@@ -110,6 +116,15 @@ export default {
       })
     },
 
+    onReturnClick() {
+      this.$router.push({
+        path: "detail",
+        query: {
+          activity: this.activity
+        }
+      })
+    },
+
     showCalc(item) {
       return !item.isBoom && typeof item.calc === "number" && item.calc > 0;
     },
@@ -153,5 +168,10 @@ export default {
 <style scoped>
 .infoContainer {
   margin: 0 0 12px 0;
+}
+
+.infoContainer {
+  height: 120px;
+  background-color: #fff;
 }
 </style>
