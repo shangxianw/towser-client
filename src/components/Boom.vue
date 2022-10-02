@@ -144,7 +144,7 @@ export default {
       };
 
       if (item.isBoom) {
-        style.backgroundColor = "blue";
+        style.backgroundColor = "lightskyblue";
         return style;
       }
 
