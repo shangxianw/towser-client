@@ -8,9 +8,9 @@
     <div class="listContainer">
       <van-cell-group>
         <van-cell title="游戏类型" :value="`${info.gameName} ${tips}`" />
-        <van-cell title="总金币">
+        <van-cell title="总金币" :label="`当前通关者预计可分得${guafen}元`">
           <template #default>
-            <span style="color: #CD7F32; font-weight: bold">{{info.money}}</span>
+            <span style="color: #CD7F32; font-weight: bold;">{{info.money}}元</span>
           </template>
         </van-cell>
         <van-cell title="通关 / 玩家人数" :value="`${info.winCount} / ${info.playCount}`" />
@@ -64,7 +64,7 @@ export default {
     },
 
     guafen() {
-      return Math.floor(this.info.money / this.info.winCount);
+      return Number(this.info.money / this.info.winCount)?.toFixed(2) || null;
     },
 
     leftTime() {

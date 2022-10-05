@@ -58,6 +58,7 @@ export default {
   border: 1px solid #eee;
   background-color: #fff;
   padding: 0 0 8px 0;
+  overflow: hidden;
 }
 
 .imgContainer {

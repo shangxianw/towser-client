@@ -1,7 +1,9 @@
 <template>
   <div class="container">
     <div class="myInfoContainer">
-      我的信息
+      <div class="myCoin">
+        ￥{{money}}元
+      </div>
     </div>
     <div class="listContainer">
       <van-cell title="个人信息" is-link />
@@ -15,6 +17,21 @@
 
 <script>
 export default {
+  data() {
+    return {
+      money: 0
+    }
+  },
+
+  created() {
+    const url = `${process.env.VUE_APP_BASE_URL}/getUserInfo`;
+    this.$api.get(url).then(resp => resp.data).then(resp => {
+      if (resp.code === 1) {
+        this.money = resp.result.money || null;
+      }
+    })
+  },
+
   methods: {
     onLoginoutClick() {
       this.$dialog.confirm({ message: "是否退出登录" }).then(() => {
@@ -28,8 +45,20 @@ export default {
 <style scoped>
 .myInfoContainer {
   background-color: lightgreen;
-  height: 280px;
+  height: 160px;
   margin-bottom: 8px;
+  position: relative;
+}
+
+.myCoin {
+  width: 100%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 50px;
+  color: #CD7F32;
+  text-align: center;
 }
 
 .listContainer {
