@@ -9,6 +9,7 @@
       <van-cell title="个人信息" is-link to="userInfo" />
       <van-cell title="提现" is-link to="well" />
       <van-cell title="我要上主页" is-link to="inviteBusiness" />
+      <van-cell title="大狗" is-link to="towser" />
       <van-cell title="退出登录" clickable @click="onLoginoutClick" />
     </div>
   </div>
@@ -29,7 +30,7 @@ export default {
     const url = `${process.env.VUE_APP_BASE_URL}/getUserInfo`;
     this.$api.get(url).then(resp => resp.data).then(resp => {
       if (resp.code === 1) {
-        this.money = resp.result.money || null;
+        this.money = resp.result.money || 0;
       }
     })
   },
