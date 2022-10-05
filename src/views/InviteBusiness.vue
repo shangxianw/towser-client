@@ -3,7 +3,9 @@
     <van-nav-bar left-arrow @click-left="$router.back()" title="我要上首页"></van-nav-bar>
     <img class="QRCode" src="../assets/inviteBusiness.png" alt="" />
     <div class="tips">
-      请识别上方二维码, 或添加微信ws_xian, 联系管理员
+      请识别上方二维码,
+      或搜索微信号ws_xian添加微信,
+      备注towser
     </div>
   </div>
 </template>
@@ -21,6 +23,6 @@ export default {
 }
 
 .tips {
-  text-align: center;
+  padding: 20px;
 }
 </style>

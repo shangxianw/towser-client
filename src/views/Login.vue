@@ -28,8 +28,7 @@ export default {
   },
 
   created() {
-    // 清楚user信息
-    this.setCookie("user", "=0;expires=" + new Date(0).toUTCString());
+    this.$utils.setCookie("user", "=0;expires=" + new Date(0).toUTCString());
   },
 
   methods: {
