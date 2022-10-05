@@ -8,7 +8,7 @@
     <div class="listContainer">
       <van-cell-group>
         <van-cell title="游戏类型" :value="`${info.gameName} ${tips}`" />
-        <van-cell title="总金币" :label="`当前通关者预计可分得${guafen}元`">
+        <van-cell title="总金币" :label="guafen">
           <template #default>
             <span style="color: #CD7F32; font-weight: bold;">{{info.money}}元</span>
           </template>
@@ -16,10 +16,13 @@
         <van-cell title="通关 / 玩家人数" :value="`${info.winCount} / ${info.playCount}`" />
         <van-cell title="剩余时间">
           <template #default>
-            <van-count-down style="color: #969799" :time="leftTime" format="DD 天 HH 时 mm 分 ss 秒" />
+            <van-count-down v-if="leftTime > 0" style="color: #969799" :time="leftTime" format="DD 天 HH 时 mm 分 ss 秒" />
+            <span v-else>已过期</span>
           </template>
         </van-cell>
-        <van-button type="primary" block @click="onStartClick">开始游戏</van-button>
+        <van-button type="primary" :disabled="!canStart" block @click="onStartClick">
+          {{ canStart ? `开始游戏` : `活动已结束` }}
+        </van-button>
       </van-cell-group>
       <van-cell class="sponsorContainer">
         <template #default>
@@ -44,7 +47,8 @@ export default {
       activity: null,
       info: {},
       tips: "",
-      config: {}
+      config: {},
+      canStart: false
     }
   },
 
@@ -52,9 +56,15 @@ export default {
     this.activity = this.$route.query.activity;
     this.updateInfo();
 
-    const url = `${process.env.VUE_APP_FILE_URL}/sponsor/${this.activity}/config.json`
+    let url = `${process.env.VUE_APP_FILE_URL}/sponsor/${this.activity}/config.json`
     this.$api.get(url).then(resp => resp.data).then(resp => {
       this.config = resp;
+    })
+
+    url = `${process.env.VUE_APP_BASE_URL}/checkCanStart`;
+    const params = { activity: this.activity }
+    this.$api.get(url, { params }).then(resp => resp.data).then(resp => {
+      this.canStart = resp.result;
     })
   },
 
@@ -64,7 +74,12 @@ export default {
     },
 
     guafen() {
-      return Number(this.info.money / this.info.winCount)?.toFixed(2) || null;
+      if (this.info.winCount === 0 || isNaN(this.info.winCount)) {
+        return `暂无通关者, 金币等你来瓜分!`
+      }
+      const money = Number(this.info.money / this.info.winCount)?.toFixed(2) || null
+      const tips = `当前通关者预计可分得${money}元`
+      return tips;
     },
 
     leftTime() {

@@ -9,14 +9,17 @@
       <van-cell title="个人信息" is-link />
       <van-cell title="提现" is-link />
       <van-cell title="提现记录" is-link />
-      <van-cell title="我要上首页" is-link />
+      <van-cell title="我要上主页" is-link to="inviteBusiness" />
       <van-cell title="退出登录" clickable @click="onLoginoutClick" />
     </div>
   </div>
 </template>
 
 <script>
+import InviteBusiness from "./InviteBusiness";
+const components = { InviteBusiness }
 export default {
+  components,
   data() {
     return {
       money: 0
