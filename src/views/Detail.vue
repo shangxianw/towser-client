@@ -64,7 +64,9 @@ export default {
     url = `${process.env.VUE_APP_BASE_URL}/checkCanStart`;
     const params = { activity: this.activity }
     this.$api.get(url, { params }).then(resp => resp.data).then(resp => {
-      this.canStart = resp.result;
+      if (resp.code === 1) {
+        this.canStart = resp.result;
+      }
     })
   },
 

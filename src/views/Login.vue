@@ -42,7 +42,8 @@ export default {
       }
       this.$api.post(url, data).then(resp => resp.data).then(resp => {
         if (resp.code === 1) {
-          this.setCookie("user", resp.result);
+          this.$utils.setCookie("user", resp.result.token);
+          this.$utils.setCookie("account", resp.result.account);
           this.$router.push("/");
           console.log(resp);
           alert("登录成功")
@@ -50,26 +51,6 @@ export default {
           alert(resp.msg);
         }
       })
-    },
-
-    setCookie: function (key, value) {
-      const cookie = document.cookie;
-      const objs = cookie.split(";");
-      const obj = {}
-      objs.forEach(item => {
-        const { key, value } = item.split("=");
-        if (key == null || value == null) return;
-        obj.key = key;
-        obj.value = value;
-      })
-      obj[key] = value;
-
-      // 还原
-      let strs = [];
-      for (let i in obj) {
-        strs.push(`${i}=${obj[i]}`);
-      }
-      document.cookie = strs.join(";");
     }
   }
 }
