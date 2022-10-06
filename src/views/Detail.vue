@@ -32,7 +32,7 @@
         </template>
       </van-cell>
       <van-list>
-        <van-image v-for="path in details || []" :key="path" :src="`${fileDomain}/sponsor/${this.activity}/${path}`" />
+        <van-image v-for="path in details || []" :key="path" :src="`${fileDomain}/activity/${this.activity}/${path}`" />
       </van-list>
     </div>
   </div>
@@ -56,7 +56,7 @@ export default {
     this.activity = this.$route.query.activity;
     this.updateInfo();
 
-    let url = `${process.env.VUE_APP_FILE_URL}/sponsor/${this.activity}/config.json`
+    let url = `${process.env.VUE_APP_FILE_URL}/activity/${this.activity}/config.json`
     this.$api.get(url).then(resp => resp.data).then(resp => {
       this.config = resp;
     })
