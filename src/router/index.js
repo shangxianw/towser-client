@@ -67,6 +67,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "addNewSponsor" */ '../views/towser/AddNewSponsor.vue')
   },
   {
+    path: '/addNewActivity',
+    name: 'addNewActivity',
+    component: () => import(/* webpackChunkName: "addNewActivity" */ '../views/towser/AddNewActivity.vue')
+  },
+  {
     path: '/towserCalc',
     name: 'towserCalc',
     component: () => import(/* webpackChunkName: "towserCalc" */ '../views/towser/TowserCalc.vue')

@@ -1,15 +1,32 @@
 <template>
   <div class="container">
-    <van-nav-bar left-arrow @click-left="$router.back()" title="结算列表"></van-nav-bar>
+    <van-nav-bar left-arrow @click-left="$router.back()" title="活动列表"></van-nav-bar>
+    <div class="optionContainer">
+      <van-button type="primary" @click="onAddActivity">新增活动</van-button>
+    </div>
     <van-tabs v-model:active="active" @click-tab="onChange">
-      <van-tab title="未结算" name="0">
+      <van-tab title="未开始" name="0">
         <van-list>
           <van-cell-group v-for="item in list" :key="item">
             <van-cell :title="item.sponsorName" :url="`#/towserCalcDetail?id=${item.id}`" />
           </van-cell-group>
         </van-list>
       </van-tab>
-      <van-tab title="已结算" name="1">
+      <van-tab title="进行中" name="1">
+        <van-list>
+          <van-cell-group v-for="item in list" :key="item">
+            <van-cell :title="item.sponsorName" :url="`#/towserCalcDetail?id=${item.id}`" />
+          </van-cell-group>
+        </van-list>
+      </van-tab>
+      <van-tab title="未结算" name="2">
+        <van-list>
+          <van-cell-group v-for="item in list" :key="item">
+            <van-cell :title="item.sponsorName" :url="`#/towserCalcDetail?id=${item.id}`" />
+          </van-cell-group>
+        </van-list>
+      </van-tab>
+      <van-tab title="已结算" name="3">
         <van-list>
           <van-cell-group v-for="item in list" :key="item">
             <van-cell :title="item.sponsorName" :url="`#/towserCalcDetail?id=${item.id}`" />
@@ -34,6 +51,10 @@ export default {
   },
 
   methods: {
+    onAddActivity() {
+      this.$router.push("addNewActivity")
+    },
+
     onChange() {
       const url = `${process.env.VUE_APP_BASE_URL}/getCalcist`;
       const params = {
@@ -57,6 +78,11 @@ export default {
 .calcContainer {
   display: block;
   margin-top: 8px;
+  background-color: #fff;
+}
+
+.optionContainer {
+  height: 100px;
   background-color: #fff;
 }
 </style>

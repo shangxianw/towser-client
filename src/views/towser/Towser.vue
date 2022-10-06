@@ -5,7 +5,7 @@
       <van-cell title="赞助商列表" is-link to="towserSponsor" />
       <van-cell title="用户列表" is-link to="towserUser" />
       <van-cell title="提现列表" is-link to="towserWell" />
-      <van-cell title="结算列表" is-link to="towserCalc" />
+      <van-cell title="活动列表" is-link to="towserCalc" />
     </div>
   </div>
 </template>
