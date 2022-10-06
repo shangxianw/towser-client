@@ -47,6 +47,36 @@ const routes = [
     component: () => import(/* webpackChunkName: "towserSponsorDetail" */ '../views/towser/TowserSponsorDetail.vue')
   },
   {
+    path: '/towserUser',
+    name: 'towserUser',
+    component: () => import(/* webpackChunkName: "towserUser" */ '../views/towser/TowserUser.vue')
+  },
+  {
+    path: '/towserUserDetail',
+    name: 'towserUserDetail',
+    component: () => import(/* webpackChunkName: "towserUserDetail" */ '../views/towser/TowserUserDetail.vue')
+  },
+  {
+    path: '/addNewUser',
+    name: 'addNewUser',
+    component: () => import(/* webpackChunkName: "addNewUser" */ '../views/towser/AddNewUser.vue')
+  },
+  {
+    path: '/addNewSponsor',
+    name: 'addNewSponsor',
+    component: () => import(/* webpackChunkName: "addNewSponsor" */ '../views/towser/AddNewSponsor.vue')
+  },
+  {
+    path: '/towserCalc',
+    name: 'towserCalc',
+    component: () => import(/* webpackChunkName: "towserCalc" */ '../views/towser/TowserCalc.vue')
+  },
+  {
+    path: '/towserCalcDetail',
+    name: 'towserCalcDetail',
+    component: () => import(/* webpackChunkName: "towserCalcDetail" */ '../views/towser/TowserCalcDetail.vue')
+  },
+  {
     path: '/game',
     name: 'game',
     component: () => import(/* webpackChunkName: "game" */ '../views/Game.vue')
