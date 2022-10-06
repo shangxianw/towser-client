@@ -6,6 +6,7 @@
       </div>
     </div>
     <div class="listContainer">
+      <van-cell title="当前体力" :value="`${power} / ${maxPower}`" :label="`每10分钟恢复${speed}点体力`" />
       <van-cell title="个人信息" is-link to="userInfo" />
       <van-cell title="提现" is-link to="well" />
       <van-cell title="我要上主页" is-link to="inviteBusiness" />
@@ -22,7 +23,10 @@ export default {
   components,
   data() {
     return {
-      money: 0
+      money: 0,
+      power: 0,
+      maxPower: 0,
+      speed: 0
     }
   },
 
@@ -31,6 +35,9 @@ export default {
     this.$api.get(url).then(resp => resp.data).then(resp => {
       if (resp.code === 1) {
         this.money = resp.result.money || 0;
+        this.maxPower = resp.result.maxPower || 0;
+        this.power = resp.result.power || 0;
+        this.speed = resp.result.speed || 0;
       }
     })
   },

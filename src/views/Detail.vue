@@ -20,8 +20,16 @@
             <span v-else>已过期</span>
           </template>
         </van-cell>
+        <van-cell title="消耗体力" :value="`${info.power}`" />
+        <van-cell title="可用体力" :value="`${power} / ${maxPower}`">
+          <template #label>
+            {{`每10分钟恢复${speed}点体力`}}
+            <van-count-down v-if="power < maxPower" style="color: #969799" :time="leftNextPowerTime" format="mm 分 ss 秒"
+              @finish="onLeftTimePowerFinish" />
+          </template>
+        </van-cell>
         <van-button type="primary" :disabled="!canStart" block @click="onStartClick">
-          {{ canStart ? `开始游戏` : `活动已结束` }}
+          开始游戏
         </van-button>
       </van-cell-group>
       <van-cell class="sponsorContainer">
@@ -48,7 +56,11 @@ export default {
       info: {},
       tips: "",
       config: {},
-      canStart: false
+      canStart: false,
+      power: 0,
+      maxPower: 0,
+      speed: 0,
+      nextPowerTime: 0
     }
   },
 
@@ -88,13 +100,34 @@ export default {
       return new Date(this.info.end).getTime() - Date.now();
     },
 
+    leftNextPowerTime() {
+      return Number(this.nextPowerTime) * 1000 - Date.now() || 0;
+    },
+
     fileDomain() {
       return process.env.VUE_APP_FILE_URL;
     }
   },
 
   methods: {
+    onLeftTimePowerFinish() {
+      this.getUserInfo();
+    },
+
+    getUserInfo() {
+      const url = `${process.env.VUE_APP_BASE_URL}/getUserInfo`;
+      this.$api.get(url).then(resp => resp.data).then(resp => {
+        if (resp.code === 1) {
+          this.maxPower = resp.result.maxPower || 0;
+          this.power = resp.result.power || 0;
+          this.speed = resp.result.speed || 0;
+          this.nextPowerTime = resp.result.nextPowerTime || 0;
+        }
+      })
+    },
+
     updateInfo() {
+      this.getUserInfo();
       const url = `${process.env.VUE_APP_BASE_URL}/getActivetyDetail`;
       const params = {
         activity: this.activity

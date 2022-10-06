@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-nav-bar title="游戏大厅" fixed>
-      <template #right>
+      <template #left>
         <van-icon name="ellipsis" @click="show = true" />
       </template>
     </van-nav-bar>
