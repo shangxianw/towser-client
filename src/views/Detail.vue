@@ -13,7 +13,8 @@
             <span style="color: #CD7F32; font-weight: bold;">{{info.money}}元</span>
           </template>
         </van-cell>
-        <van-cell title="通关 / 玩家人数" :value="`${info.winCount} / ${info.playCount}`" />
+        <van-cell title="通关 / 玩家人数" :value="`${info.winCount} / ${info.playCount}`" is-link
+          :url="`#/winPlayerList?activity=${info.id}`" />
         <van-cell title="剩余时间">
           <template #default>
             <van-count-down v-if="leftTime > 0" style="color: #969799" :time="leftTime" format="DD 天 HH 时 mm 分 ss 秒" />
@@ -60,7 +61,8 @@ export default {
       power: 0,
       maxPower: 0,
       speed: 0,
-      nextPowerTime: 0
+      nextPowerTime: 0,
+      show: false
     }
   },
 
