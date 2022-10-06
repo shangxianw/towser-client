@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar left-arrow @click-left="$router.back()" title="提现"></van-nav-bar>
+    <van-nav-bar left-arrow @click-left="$router.back()" title="提现" fixed></van-nav-bar>
     <van-form @submit="onSubmit" class="listContainer" input-align="right" error-message-align="right">
       <van-cell-group inset>
         <van-field v-model="bank" name="bank" label="支付宝账号" placeholder="请输入支付宝账号"
@@ -106,6 +106,6 @@ export default {
 
 <style scoped>
 .listContainer {
-  margin-top: 8px;
+  margin-top: 54px;
 }
 </style>

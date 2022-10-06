@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-nav-bar left-arrow @click-left="onReturnClick" :title="`${info.sponsorName} - ${info.gameName}`" fixed>
+    <van-nav-bar left-arrow @click-left="onReturnClick" :title="`${info.sponsorName}`" fixed>
       <template #right>
         <van-icon name="question-o" size="20" @click="onQAClick" />
       </template>
