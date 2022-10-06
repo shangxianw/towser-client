@@ -19,5 +19,7 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #f7f8fa;
+  max-width: 900px;
+  margin: 0 auto;
 }
 </style>
