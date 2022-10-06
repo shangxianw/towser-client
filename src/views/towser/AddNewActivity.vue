@@ -2,13 +2,11 @@
   <div class="container">
     <van-nav-bar left-arrow @click-left="$router.back()" title="新增活动"></van-nav-bar>
     <van-form @submit="onSubmit">
-      <!-- 赞助商 -->
-      <van-cell-group inset>
-        <van-field v-model="info.sponsorName" is-link readonly label="赞助商" placeholder="请选择赞助商"
-          @click="sponsorShow = true" />
-        <van-popup v-model:show="sponsorShow" round position="bottom">
-          <van-cascader v-model="info.sponsor" title="请选择赞助商" :options="sponsorOptions" @finish="onFinish" />
-        </van-popup>
+      <van-cell-group>
+        <!-- 赞助商 -->
+        <van-field v-model="info.sponsor" label="赞助商" />
+        <!-- 描述 -->
+        <van-field v-model="info.desc" label="描述" type="textarea" />
 
         <!-- 游戏类型 -->
         <van-field v-model="info.gameName" is-link readonly label="游戏类型" placeholder="请选择游戏" @click="gameShow = true" />
@@ -26,6 +24,9 @@
 
         <!-- 详情图 -->
         <van-uploader upload-text="详情图" v-model="info.fileList" multiple />
+        <!-- 封面图 -->
+        <br />
+        <van-uploader upload-text="封面图" v-model="info.frontcover" />
 
       </van-cell-group>
       <div style="margin: 16px;">
@@ -42,15 +43,17 @@ export default {
   data() {
     return {
       info: {
-        sponsor: null,
-        sponsorName: "",
-        game: null,
-        gameName: "",
-        spec: null,
+        sponsor: "贤哥来了",
+        frontcover: [],
+        desc: "我是描述",
+        game: 1,
+        gameName: "扫雷 10x10 5颗雷",
+        spec: 1,
+        money: 100,
+        start: "2022-10-07 00:00:00",
+        end: "2022-10-07 23:59:59",
         fileList: []
       },
-      sponsorShow: false,
-      sponsorOptions: [],
 
       gameShow: false,
       gameOptions: [
@@ -76,30 +79,16 @@ export default {
     }
   },
 
-  created() {
-    const url = `${process.env.VUE_APP_BASE_URL}/getSponsorList`;
-    this.$api.get(url).then(resp => resp.data).then(resp => {
-      if (resp.code === 1) {
-        this.sponsorOptions = resp.result.map(item => {
-          return {
-            text: item.name,
-            value: item.id
-          }
-        })
-      }
-    });
-  },
-
   methods: {
     onSubmit() {
-      console.log(this.info)
-    },
-
-    onFinish(selection) {
-      const { text, value } = selection.selectedOptions[0];
-      this.sponsorShow = false;
-      this.info.sponsor = value;
-      this.info.sponsorName = text;
+      console.log(this.info);
+      const url = `${process.env.VUE_APP_BASE_URL}/addNewActivity`;
+      const data = this.info;
+      this.$api.post(url, data).then(resp => resp.data).then(resp => {
+        if (resp.code === 1) {
+          alert(`nice`)
+        }
+      })
     },
 
     onGameFinish(selection) {

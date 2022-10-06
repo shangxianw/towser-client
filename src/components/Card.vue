@@ -1,7 +1,7 @@
 <template>
   <div class="container" @click="onClick">
     <div class="imgContainer">
-      <van-image v-if="info.sponsor" fix="contain" :src="`${fileDomain}/sponsor/${info.sponsor}/frontcover.png`"
+      <van-image fix="contain" :src="`${fileDomain}/activity/${info.id}/frontcover.png`"
         :style="{minHeight: '100px', margin: '0 auto'}" />
       <div class="gameInfoContainer">
         <van-icon name="smile-o" />
