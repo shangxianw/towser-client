@@ -30,7 +30,7 @@
           </template>
         </van-cell>
         <van-button type="primary" :disabled="!canStart" block @click="onStartClick">
-          开始游戏
+          {{startBtnLabel}}
         </van-button>
       </van-cell-group>
       <van-cell class="sponsorContainer">
@@ -62,7 +62,8 @@ export default {
       maxPower: 0,
       speed: 0,
       nextPowerTime: 0,
-      show: false
+      show: false,
+      startBtnLabel: "开始游戏"
     }
   },
 
@@ -75,13 +76,7 @@ export default {
       this.config = resp;
     })
 
-    url = `${process.env.VUE_APP_BASE_URL}/checkCanStart`;
-    const params = { activity: this.activity }
-    this.$api.get(url, { params }).then(resp => resp.data).then(resp => {
-      if (resp.code === 1) {
-        this.canStart = resp.result;
-      }
-    })
+    this.checkCanStart();
   },
 
   computed: {
@@ -114,6 +109,18 @@ export default {
   methods: {
     onLeftTimePowerFinish() {
       this.getUserInfo();
+      this.checkCanStart();
+    },
+
+    checkCanStart() {
+      const url = `${process.env.VUE_APP_BASE_URL}/checkCanStart`;
+      const params = { activity: this.activity }
+      this.$api.get(url, { params }).then(resp => resp.data).then(resp => {
+        this.startBtnLabel = resp.msg;
+        if (resp.code === 1) {
+          this.canStart = resp.result;
+        }
+      })
     },
 
     getUserInfo() {
