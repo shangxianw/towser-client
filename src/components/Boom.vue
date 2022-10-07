@@ -39,6 +39,7 @@
 </template>
 
 <script>
+const boomImg = require('../assets/boom/boom.png');
 export default {
   props: {
     activity: Number
@@ -213,7 +214,9 @@ export default {
         backgroundSize: `100% 100%`,
         color: "#000",
         fontWeight: "bold",
+        backgroundRepeat: "no-repeat",
         textAlign: "center",
+        backgroundPosition: "center center",
         lineHeight: `${this.sideLength}px`
       };
 
@@ -224,7 +227,7 @@ export default {
       }
 
       if (item.isBoom) {
-        style.backgroundColor = "blue";
+        style.backgroundImage = `url(${boomImg})`;
         return style;
       }
 
