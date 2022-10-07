@@ -1,19 +1,27 @@
 <template>
   <div class="container">
-    <div class="infoContainer">
-      <div>
-        <p>{{row}} x {{col}} {{boom}}颗雷</p>
-        <van-button @click="onReturnClick">返回详情页</van-button>
-        <br />
-        插旗
-        <van-switch v-model="flag" size="24" />
+    <div class="titleContainer">扫雷大作战</div>
+    <div class="chessBoardContainer">
+      <div v-for="(row, index) in arrs" :key="index" :style="rowStyle">
+        <div v-for="item in row" :key="item.col" :style="showCellStyle(item)" @click="onCellClick(item)"
+          @contextmenu.prevent="onContextMenuClick(item)">
+          {{showCalc(item) ? item.calc : ""}}
+        </div>
       </div>
     </div>
-    <div v-for="(row, index) in arrs" :key="index" :style="rowStyle">
-      <div v-for="item in row" :key="item.col" :style="showCellStyle(item)" @click="onCellClick(item)">
-        {{showCalc(item) ? item.calc : ""}}
-      </div>
-    </div>
+    <van-popup closeable style="border-top: 1px solid #ccc; box-shadow: 0px -2px 12px #ccc; height: 100px"
+      :overlay="false" :round="true" :show="popupShow" position="bottom" @click-close-icon="onQuit">
+      <template #default>
+        <div class="popupContainer">
+          <span class="flagContainer">
+            <van-space align="center">
+              插旗
+              <van-switch v-model="flag" size="24" />
+            </van-space>
+          </span>
+        </div>
+      </template>
+    </van-popup>
   </div>
 </template>
 
@@ -26,6 +34,8 @@ export default {
   data() {
     return {
       flag: false,
+      popupShow: false,
+      timer: null,
       gameType: null,
       spec: null,
       row: null,
@@ -54,6 +64,17 @@ export default {
       this.config = resp;
     })
     this.getChessBoards();
+
+
+    this.popupShow = false;
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      this.popupShow = true;
+    }, 100);
+  },
+
+  beforeUnmount() {
+    clearTimeout(this.timer);
   },
 
   computed: {
@@ -97,14 +118,29 @@ export default {
       })
     },
 
-    onCellClick(item) {
+    onQuit() {
+      this.$dialog.confirm({ message: "是否退出游戏" }).then(() => {
+        this.$router.push({
+          path: "detail",
+          query: {
+            activity: this.activity
+          }
+        })
+      })
+    },
+
+    onContextMenuClick(item) {
+      this.onCellClick(item, true);
+    },
+
+    onCellClick(item, flag = this.flag) {
       const { row, col, isFlag } = item;
       if (typeof item.calc === "number" && !isFlag) return;
       if (this.status === 2) return;
       const data = {
         row,
         col,
-        isFlag: this.flag,
+        isFlag: flag,
         token: this.token
       }
       const url = `${process.env.VUE_APP_BASE_URL}/openBoomCell`;
@@ -122,15 +158,6 @@ export default {
           }
         } else {
           alert(resp.msg);
-        }
-      })
-    },
-
-    onReturnClick() {
-      this.$router.push({
-        path: "detail",
-        query: {
-          activity: this.activity
         }
       })
     },
@@ -184,12 +211,37 @@ export default {
 </script>
 
 <style scoped>
-.infoContainer {
-  margin: 0 0 12px 0;
+.container {
+  /* height: 100%;
+  position: relative; */
 }
 
-.infoContainer {
-  height: 120px;
+.titleContainer {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 50px;
+  color: white;
+  text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+}
+
+.popupContainer {
+  width: 100%;
+  height: 100%;
   background-color: #fff;
+  position: relative;
+}
+
+.flagContainer {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.chessBoardContainer {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>

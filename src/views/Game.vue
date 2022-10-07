@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <Boom v-if="showBoom" :activity="activity"></Boom>
   </div>
 </template>
@@ -30,5 +30,9 @@ export default {
 </script>
 
 <style scoped>
-
+ .container {
+    width: 100%;
+    height: 100%;
+    /* background-color: orange; */
+  }
 </style>
