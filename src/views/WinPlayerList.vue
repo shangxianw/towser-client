@@ -3,9 +3,11 @@
     <van-nav-bar left-arrow @click-left="$router.back()" title="通关玩家列表" fixed></van-nav-bar>
     <van-list style="margin-top: 54px;">
       <van-cell-group v-for="item in list" :key="item.user" style="margin-top: 8px;">
-        <van-cell title="玩家" :value="item.user" />
-        <van-cell title="开始时间" :value="item.startTime" />
-        <van-cell title="结束时间" :value="item.winTime" />
+        <van-cell :title="item.user">
+          <template #value>
+            {{calcUseTime(item.startTime, item.winTime)}}
+          </template>
+        </van-cell>
       </van-cell-group>
     </van-list>
   </div>
@@ -26,13 +28,15 @@ export default {
     }
     this.$api.get(url, { params }).then(resp => resp.data).then(resp => {
       if (resp.code === 1) {
-        resp.result.forEach(item => {
-          item.startTime = item.startTime.replace("T", " ").split(".")[0];
-          item.winTime = item.winTime.replace("T", " ").split(".")[0];
-        })
         this.list = resp.result;
       }
     })
+  },
+
+  methods: {
+    calcUseTime(startTime, endTime) {
+      return `${endTime - startTime}秒`
+    }
   }
 }
 </script>
