@@ -168,7 +168,7 @@ export default {
 
     onCellClick(item, flag = this.flag) {
       const { row, col, isFlag } = item;
-      if (typeof item.calc === "number" && !isFlag) return;
+      if (typeof item.calc === "number" || isFlag) return;
       if (this.status === 2) return;
       const data = {
         row,
@@ -216,6 +216,7 @@ export default {
         fontWeight: "bold",
         backgroundRepeat: "no-repeat",
         textAlign: "center",
+        boxSizing: "border-box",
         backgroundPosition: "center center",
         lineHeight: `${this.sideLength}px`
       };
