@@ -9,7 +9,20 @@
         </div>
       </div>
     </div>
-    <van-popup closeable style="border-top: 1px solid #ccc; box-shadow: 0px -2px 12px #ccc; height: 100px"
+    <van-popup style="z-index: 100; border-top: 1px solid #ccc; box-shadow: 0px -2px 12px #ccc; height: 160px"
+      :overlay="false" :round="true" :show="popupEndShow" position="bottom">
+      <template #default>
+        <div class="popupContainer">
+          <span class="optionContainer">
+            <van-space align="center">
+              <van-button type="primary" @click="onQuit">退出游戏</van-button>
+              <van-button type="primary" @click="onReplay">重新游戏</van-button>
+            </van-space>
+          </span>
+        </div>
+      </template>
+    </van-popup>
+    <van-popup closeable style="z-index: 101; border-top: 1px solid #ccc; box-shadow: 0px -2px 12px #ccc; height: 100px"
       :overlay="false" :round="true" :show="popupShow" position="bottom" @click-close-icon="onQuit">
       <template #default>
         <div class="popupContainer">
@@ -35,6 +48,7 @@ export default {
     return {
       flag: false,
       popupShow: false,
+      popupEndShow: false,
       timer: null,
       gameType: null,
       spec: null,
@@ -66,6 +80,7 @@ export default {
     this.getChessBoards();
 
 
+    this.popupEndShow = false;
     this.popupShow = false;
     clearTimeout(this.timer);
     this.timer = setTimeout(() => {
@@ -102,6 +117,7 @@ export default {
       }
       const url = `${process.env.VUE_APP_BASE_URL}/startGame`;
       this.$api.get(url, { params }).then(resp => resp.data).then(resp => {
+        this.popupEndShow = false;
         if (resp.code === 1) {
           const result = resp.result;
           this.gameType = result.gameType;
@@ -112,7 +128,17 @@ export default {
           this.arrs = result.chessBoards;
           this.token = result.token;
           this.status = result.status;
-        } else {
+        }
+        else if (resp.code === 4) {
+          alert(resp.msg);
+          this.$router.push({
+            path: "detail",
+            query: {
+              activity: this.activity
+            }
+          })
+        }
+        else {
           alert(resp.msg);
         }
       })
@@ -126,6 +152,12 @@ export default {
             activity: this.activity
           }
         })
+      })
+    },
+
+    onReplay() {
+      this.$dialog.confirm({ message: "是否重新开始游戏" }).then(() => {
+        this.getChessBoards();
       })
     },
 
@@ -152,11 +184,14 @@ export default {
           this.status = status;
 
           if (Number(status === 2)) {
+            this.popupEndShow = true;
             alert("已结束！")
           } else if (Number(status === 3)) {
+            this.popupEndShow = true;
             alert("恭喜你通过对局!")
           }
-        } else {
+        }
+        else {
           alert(resp.msg);
         }
       })
@@ -231,6 +266,13 @@ export default {
   position: relative;
 }
 
+.optionContainer {
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  transform: translate(-50%, 0);
+}
+
 .flagContainer {
   position: absolute;
   left: 50%;
@@ -241,7 +283,7 @@ export default {
 .chessBoardContainer {
   position: absolute;
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  top: 40%;
+  transform: translate(-50%, -40%);
 }
 </style>
