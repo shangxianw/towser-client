@@ -66,6 +66,11 @@ export default {
 
     sideLength() {
       return Math.floor(document.body.offsetWidth / (this.col + 2));
+    },
+
+    flagImg() {
+      const flag = this.config?.image?.flag || "";
+      return `${process.env.VUE_APP_FILE_URL}/activity/${this.activity}/${flag}`;
     }
   },
 
@@ -142,6 +147,8 @@ export default {
         border: "1px solid #ccc",
         margin: "2px",
         backgroundColor: "#ccc",
+        backgroundImage: ``,
+        backgroundSize: `100% 100%`,
         color: "#000",
         fontWeight: "bold",
         textAlign: "center",
@@ -150,6 +157,7 @@ export default {
 
       if (item.isFlag) {
         style.backgroundColor = "rgb(0, 170, 144)";
+        style.backgroundImage = `url(${this.flagImg})`;
         return style;
       }
 
