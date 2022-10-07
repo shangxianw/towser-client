@@ -13,14 +13,24 @@
             <span style="color: #CD7F32; font-weight: bold;">{{info.money}}元</span>
           </template>
         </van-cell>
-        <van-cell title="通关 / 玩家人数" :value="`${info.winCount} / ${info.playCount}`" is-link
+        <van-cell v-if="!foreshow" title="通关 / 玩家人数" :value="`${info.winCount} / ${info.playCount}`" is-link
           :url="`#/winPlayerList?activity=${info.id}`" />
-        <van-cell title="剩余时间">
+
+        <!-- 倒计时 -->
+        <van-cell v-if="!foreshow" title="剩余时间">
           <template #default>
             <van-count-down v-if="leftTime > 0" style="color: #969799" :time="leftTime" format="DD 天 HH 时 mm 分 ss 秒" />
             <span v-else>已过期</span>
           </template>
         </van-cell>
+        <van-cell v-else title="开始时间">
+          <template #default>
+            <van-count-down v-if="leftForeTime > 0" style="color: #969799" :time="leftForeTime"
+              format="DD 天 HH 时 mm 分 ss 秒" @finish="onLeftForeTimePowerFinish" />
+            <span v-else>活动已开始</span>
+          </template>
+        </van-cell>
+
         <van-cell title="消耗体力" :value="`${info.power}`" />
         <van-cell title="可用体力" :value="`${power} / ${maxPower}`">
           <template #label>
@@ -54,6 +64,7 @@ export default {
   data() {
     return {
       activity: null,
+      foreshow: false,
       info: {},
       tips: "",
       config: {},
@@ -69,6 +80,7 @@ export default {
 
   created() {
     this.activity = this.$route.query.activity;
+    this.foreshow = this.$route.query.foreshow;
     this.updateInfo();
 
     let url = `${process.env.VUE_APP_FILE_URL}/activity/${this.activity}/config.json`
@@ -97,6 +109,10 @@ export default {
       return new Date(this.info.end).getTime() - Date.now();
     },
 
+    leftForeTime() {
+      return new Date(this.info.start).getTime() - Date.now();
+    },
+
     leftNextPowerTime() {
       return Number(this.nextPowerTime) * 1000 - Date.now() || 0;
     },
@@ -110,6 +126,19 @@ export default {
     onLeftTimePowerFinish() {
       this.getUserInfo();
       this.checkCanStart();
+    },
+
+    onLeftForeTimePowerFinish() {
+      this.foreshow = false;
+      this.getUserInfo();
+      this.checkCanStart();
+      this.$router.push({
+        path: "detail",
+        query: {
+          activity: this.info.id,
+          foreshow: false
+        }
+      })
     },
 
     checkCanStart() {

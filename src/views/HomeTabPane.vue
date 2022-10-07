@@ -2,7 +2,8 @@
   <div>
     <van-nav-bar title="游戏大厅" fixed>
       <template #left>
-        <van-icon name="ellipsis" @click="show = true" />
+        <van-icon name="ellipsis" size="24" @click="show=true" />
+        <van-icon style="margin-left: 12px;" name="label-o" size="24" @click="foreshow=true" />
       </template>
     </van-nav-bar>
     <div class="listContainer">
@@ -36,13 +37,29 @@
         </template>
       </van-field>
     </van-popup>
-
+    <van-popup v-model:show="foreshow" position="bottom" :style="{ height: '600px', backgroundColor: '#f7f8fa' }"
+      @open="onForeOpen">
+      <van-divider>活动预告</van-divider>
+      <div style="height: 536px;">
+        <van-list style="height: 100%; overflow-y: auto;" :finished="true" finished-text="没有更多预告活动了">
+          <van-row gutter="12" justify="center">
+            <van-col span="11">
+              <ForeCard v-for="(item, index) in leftForeCards" :key="index" :info="item" />
+            </van-col>
+            <van-col span="11">
+              <ForeCard v-for="(item, index) in rightForeCards" :key="index" :info="item" />
+            </van-col>
+          </van-row>
+        </van-list>
+      </div>
+    </van-popup>
   </div>
 </template>
 
 <script>
 import Card from '../components/Card.vue';
-const components = { Card }
+import ForeCard from '../components/ForeCard.vue';
+const components = { Card, ForeCard }
 export default {
   components,
   data() {
@@ -51,8 +68,10 @@ export default {
       sort: "1",
       loading: false,
       finished: true,
-      list: [{}, {}],
-      show: false
+      list: [],
+      forelist: [],
+      show: false,
+      foreshow: false
     }
   },
 
@@ -64,6 +83,14 @@ export default {
     rightCards() {
       return this.list.filter((item, index) => index % 2 === 1);
     },
+
+    leftForeCards() {
+      return this.forelist.filter((item, index) => index % 2 === 0);
+    },
+
+    rightForeCards() {
+      return this.forelist.filter((item, index) => index % 2 === 1);
+    },
   },
 
   created() {
@@ -71,6 +98,18 @@ export default {
   },
 
   methods: {
+    onForeOpen() {
+      // 预告
+      const url2 = `${process.env.VUE_APP_BASE_URL}/getForeActivityList`;
+      this.$api.get(url2).then(resp => resp.data).then(resp => {
+        if (resp.code === 1) {
+          this.forelist = resp.result
+        } else {
+          alert(resp.msg)
+        }
+      })
+    },
+
     updateList() {
       const params = {
         kind: this.kind,
@@ -114,5 +153,16 @@ export default {
 <style scoped>
 .listContainer {
   margin-top: 46px;
+}
+
+.foreshowContainer {
+  margin-top: 0px;
+  height: 100%;
+}
+
+.forshowList {
+  height: 80%;
+  position: relative;
+  background-color: aqua;
 }
 </style>
