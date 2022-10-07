@@ -4,6 +4,9 @@
       <div>
         <p>{{row}} x {{col}} {{boom}}颗雷</p>
         <van-button @click="onReturnClick">返回详情页</van-button>
+        <br />
+        插旗
+        <van-switch v-model="flag" size="24" />
       </div>
     </div>
     <div v-for="(row, index) in arrs" :key="index" :style="rowStyle">
@@ -22,6 +25,7 @@ export default {
 
   data() {
     return {
+      flag: false,
       gameType: null,
       spec: null,
       row: null,
@@ -45,7 +49,7 @@ export default {
   },
 
   created() {
-    const url = `${process.env.VUE_APP_FILE_URL}/sponsor/${this.activity}/config.json`
+    const url = `${process.env.VUE_APP_FILE_URL}/activity/${this.activity}/config.json`
     this.$api.get(url).then(resp => resp.data).then(resp => {
       this.config = resp;
     })
@@ -89,12 +93,13 @@ export default {
     },
 
     onCellClick(item) {
-      if (typeof item.calc === "number") return;
+      const { row, col, isFlag } = item;
+      if (typeof item.calc === "number" && !isFlag) return;
       if (this.status === 2) return;
-      const { row, col } = item;
       const data = {
         row,
         col,
+        isFlag: this.flag,
         token: this.token
       }
       const url = `${process.env.VUE_APP_BASE_URL}/openBoomCell`;
@@ -126,7 +131,7 @@ export default {
     },
 
     showCalc(item) {
-      return !item.isBoom && typeof item.calc === "number" && item.calc > 0;
+      return !item.isBoom && typeof item.calc === "number" && item.calc > 0 && !item.isFlag;
     },
 
     showCellStyle(item) {
@@ -142,6 +147,11 @@ export default {
         textAlign: "center",
         lineHeight: `${this.sideLength}px`
       };
+
+      if (item.isFlag) {
+        style.backgroundColor = "rgb(0, 170, 144)";
+        return style;
+      }
 
       if (item.isBoom) {
         style.backgroundColor = "blue";
